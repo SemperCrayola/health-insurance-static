@@ -30,6 +30,34 @@
             <label for="diastolic">Diastolic Blood Pressure:</label>
             <input type="number" id="diastolic">
         </div>
+        <form>
+            <label for="history">Choose any of the following that is in the persons family history:</label><br>
+            <p>Use shift and then select if you need to select multiple</p>
+            <select id="cars" name="cars" multiple>
+                <option value="diabetes">Diabetes</option>
+                <option value="cancer">Cancer</option>
+                <option value="alzheimers">Alzheimers</option>
+            </select><br>
+            
+        </form>
+        <button type="submit" onclick="pressedButton()">Submit</button>
+        <script>
+            async function calculatePoints() {
+                const age = document.getElementById('age').value;
+                const height = document.getElementById('height').value;
+                const weight = document.getElementById('weight').value;
+                const systolic = document.getElementById('systolic').value;
+                const diastolic = document.getElementById('diastolic').value;
+                
+                
+                
+            }
+        
+            async function pressedButton() {
+                await calculatePoints(); 
+            }
+        </script>
+        
 
 </body>
 </html>
