@@ -41,6 +41,7 @@
     </form>
     <button type="button" onclick="calculatePoints()"> Submit</button>
     <p id="agePointsResult"></p>
+    <p id="bmiPointsResult"></p>
     <script>
         async function calculatePoints() {
     const age = document.getElementById('age').value;
@@ -55,7 +56,7 @@
 }
 
 async function calculateBMI(age, height, weight, systolic, diastolic, history) {
-    const response = await fetch('https://health-insurance-node.azurewebsites.net/calculate-bmi', {
+    const response = await fetch('https://health-insurance-node.azurewebsites.net/calculateBMI', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -64,7 +65,9 @@ async function calculateBMI(age, height, weight, systolic, diastolic, history) {
     });
 
     const data = await response.json();
-    document.getElementById('bmiPoints').innerText = `Body Mass: ${data.bmiPoints} (index = ${data.bmi})`;
+    document.getElementById('bmiPointsResult').innerText = `Body Mass: ${data.bmiPoints} (index = ${data.bmi})`;
+
+
 }
 
 async function calculateAge(age, height, weight, systolic, diastolic, history) {
