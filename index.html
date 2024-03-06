@@ -39,32 +39,48 @@
             <option value="alzheimers">Alzheimers</option>
         </select><br>
     </form>
-    <button type="button" onclick="calculatePoints()">Submit</button>
+    <button type="button" onclick="calculatePoints()"> Submit</button>
     <p id="agePointsResult"></p>
     <script>
         async function calculatePoints() {
-            const age = document.getElementById('age').value;
-            const height = document.getElementById('height').value;
-            const weight = document.getElementById('weight').value;
-            const systolic = document.getElementById('systolic').value;
-            const diastolic = document.getElementById('diastolic').value;
-            const history = Array.from(document.getElementById('history').selectedOptions).map(option => option.value);
+    const age = document.getElementById('age').value;
+    const height = document.getElementById('height').value;
+    const weight = document.getElementById('weight').value;
+    const systolic = document.getElementById('systolic').value;
+    const diastolic = document.getElementById('diastolic').value;
+    const history = Array.from(document.getElementById('history').selectedOptions).map(option => option.value);
+    
+    await calculateAge(age, height, weight, systolic, diastolic, history);
+    await calculateBMI(age, height, weight, systolic, diastolic, history);
+}
 
-            const response = await fetch('https://health-insurance-node.azurewebsites.net/addAge', { //we need to change the everything before /addAge to the Url of the node
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ age, height, weight, systolic, diastolic, history })
-            });
+async function calculateBMI(age, height, weight, systolic, diastolic, history) {
+    const response = await fetch('https://health-insurance-node.azurewebsites.net/calculate-bmi', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ age, height, weight, systolic, diastolic, history })
+    });
 
-            const data = await response.json();
-            document.getElementById('agePointsResult').innerText = `Age: ${data.agePoints}`;
-        };
+    const data = await response.json();
+    document.getElementById('bmiPoints').innerText = `Body Mass: ${data.bmiPoints} (index = ${data.bmi})`;
+}
 
-        async function pressedButton() {
-            await calculatePoints();
-        }
+async function calculateAge(age, height, weight, systolic, diastolic, history) {
+    const response = await fetch('https://health-insurance-node.azurewebsites.net/addAge', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ age, height, weight, systolic, diastolic, history })
+    });
+
+    const data = await response.json();
+    document.getElementById('agePointsResult').innerText = `Age: ${data.agePoints}`;
+}
+
+
     </script>
 </body>
 </html>
