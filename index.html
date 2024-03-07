@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health Insurance Calculator</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <h1>Health Insurance Calculator</h1>
+    <h1 style="background-color: rgb(133, 133, 207); color: white;">Health Insurance Calculator</h1>
+
     <p>This program helps you classify health insurance based on their risk level. <br>
         Their health is judged in terms of their body-mass index, blood pressure, age,<br>
         and family history of disease.</p>
+        <div class="container">
     <div>
         <label for="age">Age: </label>
         <input type="number" id="age">
@@ -39,10 +42,13 @@
             <option value="alzheimers">Alzheimers</option>
         </select><br>
     </form>
+    </div>
     <button type="button" onclick="calculatePoints()"> Submit</button>
+    <div class="results-box">
     <p id="agePointsResult"></p>
     <p id="bmiPointsResult"></p>
     <p id="bloodPressurePointsResult"></p>
+    </div>
     <script>
         async function calculatePoints() {
     const age = document.getElementById('age').value;
