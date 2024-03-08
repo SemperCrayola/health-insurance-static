@@ -118,7 +118,7 @@ async function calculateHistoryPoints(age, height, weight, systolic, diastolic, 
     });
 
     const data = await response.json();
-    document.getElementById('historyPointsResult').innerText = `Family History: ${data.historyPointsPoints}`;
+    document.getElementById('historyPointsResult').innerText = `Family History: ${data.historyPoints}`;
 }
 async function calculateTotalPoints(age, height, weight, systolic, diastolic, history) {
     const response = await fetch('https://health-insurance-node.azurewebsites.net/calculateTotalPoints', {
