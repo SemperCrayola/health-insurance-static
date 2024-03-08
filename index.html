@@ -62,7 +62,7 @@
     await calculateAge(age, height, weight, systolic, diastolic, history);
     await calculateBMI(age, height, weight, systolic, diastolic, history);
     await calculateBloodPressure(age, height, weight, systolic, diastolic, history);
-    calculateHistoryPoints(history);
+    await calculateHistoryPoints(history);
 }
 
 async function calculateBMI(age, height, weight, systolic, diastolic, history) {
