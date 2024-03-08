@@ -127,13 +127,13 @@ function calculateTotalScore() {
     const resultElement = document.getElementById('totalScoreResult');
 
     if (totalScore <= 20) {
-        resultElement.innerText = `Total Score: ${totalScore} - Low risk`;
+        resultElement.innerText = `Based on these scores, the person is low-risk.`;
     } else if (totalScore <= 50) {
-        resultElement.innerText = `Total Score: ${totalScore} - Moderate risk`;
+        resultElement.innerText = `Based on these scores, the person is moderate-risk.`;
     } else if (totalScore <= 75) {
-        resultElement.innerText = `Total Score: ${totalScore} - High risk`;
+        resultElement.innerText = `Based on these scores, the person is high-risk.`;
     } else {
-        resultElement.innerText = `Total Score: ${totalScore} - Uninsurable`;
+        resultElement.innerText = `Based on these scores, the person is uninsurable.`;
     }
 }
 
