@@ -49,7 +49,8 @@
     <p id="historyPointsResult"></p>
     <p id="bmiPointsResult"></p>
     <p id="bloodPressurePointsResult"></p>
-    <p id="totalScoreResult"></p>
+    <p id="totalPointsResult"></p>
+    <p id="riskCategoryResult"></p>
     </div>
     <script>
 async function calculatePoints() {
@@ -60,18 +61,10 @@ async function calculatePoints() {
     const diastolic = document.getElementById('diastolic').value;
     const history = Array.from(document.getElementById('history').selectedOptions).map(option => option.value);
 
-    const response = await fetch('https://health-insurance-node.azurewebsites.net/calculatePoints', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ age, height, weight, systolic, diastolic, history })
-    });
     await calculateAge(age, height, weight, systolic, diastolic, history);
     await calculateBMI(age, height, weight, systolic, diastolic, history);
     await calculateBloodPressure(age, height, weight, systolic, diastolic, history);
     await calculateHistoryPoints(history);
-    calculateTotalScore();
 }
 
 async function calculateBMI(age, height, weight, systolic, diastolic, history) {
@@ -115,13 +108,48 @@ async function calculateAge(age, height, weight, systolic, diastolic, history) {
     const data = await response.json();
     document.getElementById('agePointsResult').innerText = `Age: ${data.agePoints}`;
 }
-async function calculateHistoryPointsAsync(historyPoints) {
-    // Simulate a delay to show the asynchronous behavior (you can remove this in a production environment)
-    await new Promise(resolve => setTimeout(resolve, 1000));
+async function calculateHistoryPoints(history) {
+    const response = await fetch('https://health-insurance-node.azurewebsites.net/calculateHistoryPoints', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ history })
+    });
 
-    document.getElementById('historyPointsResult').innerText = `History of Diseases: ${historyPoints}`;
+    const data = await response.json();
+    return data.historyPoints;
 }
+async function calculateTotalPoints() {
+    const age = document.getElementById('age').value;
+    const height = document.getElementById('height').value;
+    const weight = document.getElementById('weight').value;
+    const systolic = document.getElementById('systolic').value;
+    const diastolic = document.getElementById('diastolic').value;
+    const history = Array.from(document.getElementById('history').selectedOptions).map(option => option.value);
 
+    const agePoints = await calculateAgePoints(age);
+    const historyPoints = await calculateHistoryPoints(history);
+    const bmiPoints = await calculateBMI(age, height, weight, systolic, diastolic, history);
+    const bloodPressurePoints = await calculateBloodPressure(age, height, weight, systolic, diastolic, history);
+
+    document.getElementById('agePointsResult').innerText = `Age: ${agePoints}`;
+    document.getElementById('historyPointsResult').innerText = `History: ${historyPoints}`;
+    document.getElementById('bmiPointsResult').innerText = `Body Mass: ${bmiPoints.bmiPoints} (index = ${bmiPoints.bmi})`;
+    document.getElementById('bloodPressurePointsResult').innerText = `Blood Pressure: ${bloodPressurePoints.bloodPressurePoints} (${bloodPressurePoints.bloodPressureType})`;
+
+    const response = await fetch('https://health-insurance-node.azurewebsites.net/calculateTotalPoints', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ agePoints, history: history, bmiPoints: bmiPoints.bmiPoints, bloodPressurePoints: bloodPressurePoints.bloodPressurePoints })
+    });
+
+    const totalPointsData = await response.json();
+    document.getElementById('totalPointsResult').innerText = `Total Points: ${totalPointsData.totalPoints}`;
+    document.getElementById('riskCategoryResult').innerText = `Risk Category: ${totalPointsData.riskCategory}`;
+}
 
 
     </script>
