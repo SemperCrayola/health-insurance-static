@@ -52,18 +52,25 @@
     <p id="totalScoreResult"></p>
     </div>
     <script>
-        async function calculatePoints() {
+async function calculatePoints() {
     const age = document.getElementById('age').value;
     const height = document.getElementById('height').value;
     const weight = document.getElementById('weight').value;
     const systolic = document.getElementById('systolic').value;
     const diastolic = document.getElementById('diastolic').value;
     const history = Array.from(document.getElementById('history').selectedOptions).map(option => option.value);
-    
+
+    const response = await fetch('https://health-insurance-node.azurewebsites.net/calculatePoints', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ age, height, weight, systolic, diastolic, history })
+    });
     await calculateAge(age, height, weight, systolic, diastolic, history);
     await calculateBMI(age, height, weight, systolic, diastolic, history);
     await calculateBloodPressure(age, height, weight, systolic, diastolic, history);
-    calculateHistoryPoints(history);
+    await calculateHistoryPoints(history);
     calculateTotalScore();
 }
 
@@ -108,34 +115,13 @@ async function calculateAge(age, height, weight, systolic, diastolic, history) {
     const data = await response.json();
     document.getElementById('agePointsResult').innerText = `Age: ${data.agePoints}`;
 }
-function calculateHistoryPoints(history) {
-    let historyPoints = 0;
-    history.forEach(disease => {
-        if (disease === 'diabetes' || disease === 'cancer' || disease === 'alzheimers') {
-            historyPoints += 10;
-        }
-    });
+async function calculateHistoryPointsAsync(historyPoints) {
+    // Simulate a delay to show the asynchronous behavior (you can remove this in a production environment)
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     document.getElementById('historyPointsResult').innerText = `History of Diseases: ${historyPoints}`;
 }
-function calculateTotalScore() {
-    const agePoints = parseInt(document.getElementById('agePointsResult').innerText.split(':')[1].trim());
-    const bmiPoints = parseInt(document.getElementById('bmiPointsResult').innerText.split(':')[1].trim());
-    const bloodPressurePoints = parseInt(document.getElementById('bloodPressurePointsResult').innerText.split(':')[1].trim());
-    const historyPoints = parseInt(document.getElementById('historyPointsResult').innerText.split(':')[1].trim());
 
-    const totalScore = agePoints + bmiPoints + bloodPressurePoints + historyPoints;
-    const resultElement = document.getElementById('totalScoreResult');
-
-    if (totalScore <= 20) {
-        resultElement.innerText = `Based on these scores, the person is low-risk.`;
-    } else if (totalScore <= 50) {
-        resultElement.innerText = `Based on these scores, the person is moderate-risk.`;
-    } else if (totalScore <= 75) {
-        resultElement.innerText = `Based on these scores, the person is high-risk.`;
-    } else {
-        resultElement.innerText = `Based on these scores, the person is uninsurable.`;
-    }
-}
 
 
     </script>
