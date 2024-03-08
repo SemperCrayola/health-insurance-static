@@ -63,6 +63,7 @@
     await calculateBMI(age, height, weight, systolic, diastolic, history);
     await calculateBloodPressure(age, height, weight, systolic, diastolic, history);
     calculateHistoryPoints(history);
+    calculateTotalScore();
 }
 
 async function calculateBMI(age, height, weight, systolic, diastolic, history) {
@@ -114,6 +115,25 @@ function calculateHistoryPoints(history) {
         }
     });
     document.getElementById('historyPointsResult').innerText = `History of Diseases: ${historyPoints}`;
+}
+function calculateTotalScore() {
+    const agePoints = parseInt(document.getElementById('agePointsResult').innerText.split(':')[1].trim());
+    const bmiPoints = parseInt(document.getElementById('bmiPointsResult').innerText.split(':')[1].trim());
+    const bloodPressurePoints = parseInt(document.getElementById('bloodPressurePointsResult').innerText.split(':')[1].trim());
+    const historyPoints = parseInt(document.getElementById('historyPointsResult').innerText.split(':')[1].trim());
+
+    const totalScore = agePoints + bmiPoints + bloodPressurePoints + historyPoints;
+    const resultElement = document.getElementById('totalScoreResult');
+
+    if (totalScore <= 20) {
+        resultElement.innerText = `Total Score: ${totalScore} - Low risk`;
+    } else if (totalScore <= 50) {
+        resultElement.innerText = `Total Score: ${totalScore} - Moderate risk`;
+    } else if (totalScore <= 75) {
+        resultElement.innerText = `Total Score: ${totalScore} - High risk`;
+    } else {
+        resultElement.innerText = `Total Score: ${totalScore} - Uninsurable`;
+    }
 }
 
 
