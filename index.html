@@ -118,38 +118,21 @@ async function calculateHistoryPoints(history) {
     });
 
     const data = await response.json();
-    return data.historyPoints;
+    document.getElementById('historyPointsResult').innerText = `Family History: ${data.historyPointsPoints}`;
 }
-async function calculateTotalPoints() {
-    const age = document.getElementById('age').value;
-    const height = document.getElementById('height').value;
-    const weight = document.getElementById('weight').value;
-    const systolic = document.getElementById('systolic').value;
-    const diastolic = document.getElementById('diastolic').value;
-    const history = Array.from(document.getElementById('history').selectedOptions).map(option => option.value);
-
-    const agePoints = await calculateAgePoints(age);
-    const historyPoints = await calculateHistoryPoints(history);
-    const bmiPoints = await calculateBMI(age, height, weight, systolic, diastolic, history);
-    const bloodPressurePoints = await calculateBloodPressure(age, height, weight, systolic, diastolic, history);
-
-    document.getElementById('agePointsResult').innerText = `Age: ${agePoints}`;
-    document.getElementById('historyPointsResult').innerText = `History: ${historyPoints}`;
-    document.getElementById('bmiPointsResult').innerText = `Body Mass: ${bmiPoints.bmiPoints} (index = ${bmiPoints.bmi})`;
-    document.getElementById('bloodPressurePointsResult').innerText = `Blood Pressure: ${bloodPressurePoints.bloodPressurePoints} (${bloodPressurePoints.bloodPressureType})`;
-
+async function calculateTotalPoints(history) {
     const response = await fetch('https://health-insurance-node.azurewebsites.net/calculateTotalPoints', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ agePoints, history: history, bmiPoints: bmiPoints.bmiPoints, bloodPressurePoints: bloodPressurePoints.bloodPressurePoints })
+        body: JSON.stringify({ history })
     });
 
-    const totalPointsData = await response.json();
-    document.getElementById('totalPointsResult').innerText = `Total Points: ${totalPointsData.totalPoints}`;
-    document.getElementById('riskCategoryResult').innerText = `Risk Category: ${totalPointsData.riskCategory}`;
+    const data = await response.json();
+    document.getElementById('historyPointsResult').innerText = `Risk Category: ${data.riskCategory}`;
 }
+
 
 
     </script>
