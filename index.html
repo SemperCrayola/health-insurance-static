@@ -49,7 +49,6 @@
     <p id="historyPointsResult"></p>
     <p id="bmiPointsResult"></p>
     <p id="bloodPressurePointsResult"></p>
-    <p id="riskCategoryResult"></p>
     </div>
     <script>
 async function calculatePoints() {
@@ -64,11 +63,8 @@ async function calculatePoints() {
     await calculateBMI(age, height, weight, systolic, diastolic, history);
     await calculateBloodPressure(age, height, weight, systolic, diastolic, history);
     await calculateHistoryPoints(age, height, weight, systolic, diastolic, history);
-    await calculateTotalPoints(age, height, weight, systolic, diastolic, history);
-
-    document.getElementById('historyPointsResult').innerText = `History: ${historyPoints}`;
+    //await calculateTotalPoints(age, height, weight, systolic, diastolic, history);
 }
-
 async function calculateBMI(age, height, weight, systolic, diastolic, history) {
     const response = await fetch('https://health-insurance-node.azurewebsites.net/calculateBMI', {
         method: 'POST',
@@ -121,8 +117,9 @@ async function calculateHistoryPoints(age, history) {
 
     const data = await response.json();
     return data.historyPoints;
+    document.getElementById('historyPointsResult').innerText = `History: ${historyPoints}`;
 }
-async function calculateTotalPoints(age, height, weight, systolic, diastolic, history) {
+/*async function calculateTotalPoints(age, height, weight, systolic, diastolic, history) {
     const response = await fetch('https://health-insurance-node.azurewebsites.net/calculateTotalPoints', {
         method: 'POST',
         headers: {
@@ -133,7 +130,7 @@ async function calculateTotalPoints(age, height, weight, systolic, diastolic, hi
 
     const data = await response.json();
     document.getElementById('riskCategoryResult').innerText = `Risk Category: ${data.riskCategory}`;
-}
+}*/
 
 
 
