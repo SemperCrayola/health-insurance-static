@@ -63,7 +63,7 @@ async function calculatePoints() {
     await calculateBMI(age, height, weight, systolic, diastolic, history);
     await calculateBloodPressure(age, height, weight, systolic, diastolic, history);
     await calculateHistoryPoints(age, height, weight, systolic, diastolic, history);
-    //await calculateTotalPoints(age, height, weight, systolic, diastolic, history);
+    await calculateTotalPoints(age, height, weight, systolic, diastolic, history);
 }
 async function calculateBMI(age, height, weight, systolic, diastolic, history) {
     const response = await fetch('https://health-insurance-node.azurewebsites.net/calculateBMI', {
