@@ -19,7 +19,7 @@
     </div>
     <div>
         <label for="height">Height in Inches:</label>
-        <input type="number" id="height">
+        <select id="height"></select>
     </div>
     <div>
         <label for="weight">Weight in Pounds:</label>
@@ -53,6 +53,14 @@
 
     </div>
     <script>
+
+var select = document.getElementById("height");
+    for (var i = 24; i <= 100; i++) {
+        var option = document.createElement("option");
+        option.text = i + "inches";
+        option.value = i;
+        select.appendChild(option);
+    }
 async function calculatePoints() {
     const age = document.getElementById('age').value;
     const height = document.getElementById('height').value;
